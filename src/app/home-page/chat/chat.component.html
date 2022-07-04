@@ -1,0 +1,70 @@
+<div class="position-relative c-vh-94 w-100">
+<div class="c-message-container" #chatMessages>
+  <ng-container *ngFor="let message of messages;">
+    <ng-container [ngTemplateOutlet]="message.sender === 'Ai' ? ai_message :user_message "
+      [ngTemplateOutletContext]="{$implicit:message}"></ng-container>
+  </ng-container>
+
+</div>
+<div class="position-absolute  bottom-0 w-100" #test>
+  <div class="container">
+    <div class="row d-flex">
+      <input [(ngModel)]="userInput" class="c-input">
+    </div>
+  </div>
+  <div class="container">
+    <div class="row d-flex bg-light py-1 justify-content-between">
+      <img src="assets/setting.png" alt="" class="tools-image" (click)="scrollTheChatToBottom()">
+      <img src="assets/send-message.png" alt="" class="tools-image" (click)="sendMessageToWit()" [ngClass]="{'opacity-25': userInput == ''}" keyEnterPress
+      (keyEnterEvent)="sendMessageToWit()"
+      >
+    </div>
+  </div>
+</div>
+</div>
+<!--  -->
+<!-- AI message Template -->
+<ng-template #ai_message let-message>
+  <div class="container c-container">
+    <div class="row">
+      <div class="col-1 position-relative mx-1 ms-3">
+        <img src="assets/bot.png" alt="" class="ai-avatar">
+      </div>
+      <div class="col-10 px-0">
+        <div class="ai-message-container">
+          <div class="message">
+            <div class="message-header">
+              C-3PO
+            </div>
+            <hr>
+            <div class="message-body">{{message.text}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- // AI message Template -->
+<!-- User Message Template -->
+<ng-template #user_message let-message>
+
+  <div class="container c-container">
+    <div class="row justify-content-end">
+      <div class="col-10 px-0">
+        <div class="ai-message-container">
+          <div class="message">
+            <div class="message-header">
+              {{(afAuth.authState | async)?.displayName}}
+            </div>
+            <hr>
+            <div class="message-body">{{message.text}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-1 position-relative mx-1 me-3">
+        <img class="user-avatar" [src]="(afAuth.authState | async)?.photoURL || 'assets/default-user.png'">
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- //User Message Template -->
